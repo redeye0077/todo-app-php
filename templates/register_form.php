@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ユーザー登録</title>
+    <link rel="stylesheet" href="/todo-app-php/public/assets/resister.css">
 </head>
 <body>
     <h1>ユーザー登録</h1>
