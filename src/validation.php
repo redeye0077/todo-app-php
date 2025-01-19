@@ -1,6 +1,6 @@
 <?php
 
-function validateUserInput($pdo, $username, $email, $password) {
+function validateUserInput($pdo, $username, $email, $password, $password_confirm) {
     $errors = [];
 
     // ユーザー名のチェック
@@ -24,11 +24,41 @@ function validateUserInput($pdo, $username, $email, $password) {
         $errors[] = 'パスワードは8文字以上で、英数字を含む必要があります。';
     }
 
+    // パスワード確認のチェック
+    if ($password !== $password_confirm) {
+        $errors[] = 'パスワードと確認用パスワードが一致しません。';
+    }
+
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
     $stmt->execute([':email' => $email]);
     if ($stmt->fetchColumn() > 0) {
         $errors[] = 'このメールアドレスは既に登録されています。';
     }
 
+    return $errors;
+}
+
+function validateLoginInput($pdo, $email, $password) {
+    $errors = [];
+    // メールアドレスのチェック
+    if (empty($email)) {
+        $errors[] = 'メールアドレスを入力してください。';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = '有効なメールアドレスを入力してください。';
+    }
+
+    // ユーザー情報を取得
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+    $stmt->execute([':email' => $email]);
+    $user = $stmt->fetch();
+
+    // パスワードのチェック
+    if (empty($password)) {
+        $errors[] = 'パスワードを入力してください。';
+    }
+    if ($user && !password_verify($password, $user['password'])) {
+        $errors[] = 'パスワードが一致しません。';
+    }
+    
     return $errors;
 }
