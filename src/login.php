@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // ログイン成功
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
-        header('Location: /todo-app-php/public/success.html');
+        header('Location: /todo-app-php/public/main.php');
         exit;
     } else {
         $errors = validateLoginInput($pdo, $email, $password);
