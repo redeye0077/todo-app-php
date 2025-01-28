@@ -62,3 +62,26 @@ function validateLoginInput($pdo, $email, $password) {
     
     return $errors;
 }
+
+function validateTaskInput($title, $description, $status) {
+    $errors = [];
+
+    // タイトルのチェック
+    if (empty($title)) {
+        $errors[] = 'タイトルを入力してください。';
+    } elseif (strlen($title) > 255) {
+        $errors[] = 'タイトルは255文字以内で入力してください。';
+    }
+
+    // 説明のチェック（任意）
+    if (empty($description)) {
+        $errors[] = '説明文を入力してください。';
+    }
+
+    // ステータスのチェック
+    if (!in_array($status, ['incomplete', 'complete'])) {
+        $errors[] = 'ステータスを選択してください。';
+    }
+
+    return $errors;
+}
