@@ -9,6 +9,11 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+//セッションメッセージ
+if (isset($_SESSION['success_message'])) {
+    echo '<p>' . htmlspecialchars($_SESSION['success_message']) . '</p>';
+    unset($_SESSION['success_message']);
+}
 // タスクを取得
 try {
     $stmt = $pdo->prepare("SELECT * FROM tasks WHERE user_id = :user_id ORDER BY created_at DESC");
@@ -41,7 +46,7 @@ try {
                     <th>詳細</th>
                     <th>ステータス</th>
                     <th>作成日時</th>
-                    <th>編集</th>
+                    <th>操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,6 +57,12 @@ try {
                         <td><?= $task['status'] === 'complete' ? '完了' : '未完了' ?></td>
                         <td><?= htmlspecialchars($task['created_at']) ?></td>
                         <td><a href="/todo-app-php/templates/tasks/edit_form.php?task_id=<?= $task['id'] ?>">編集</a></td>
+                        <td>
+                            <form action="/todo-app-php/templates/tasks/delete_form.php" method="POST" style="display:inline;">
+                                <input type="hidden" name="task_id" value="<?= htmlspecialchars($task['id']) ?>">
+                                <button type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

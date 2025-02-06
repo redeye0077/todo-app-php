@@ -58,4 +58,15 @@ ul {
 
 li {
     margin: 5px 0;
-} 
+}
+
+a {
+    display: inline-block;
+    margin: 10px 0;
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
