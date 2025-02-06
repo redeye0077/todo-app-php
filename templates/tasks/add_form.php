@@ -41,6 +41,7 @@ if (!empty($_SESSION['errors'])) {
         </select><br><br>
 
         <button type="submit">追加</button>
+        <a href="/todo-app-php/templates/tasks/tasks_list.php">タスク一覧画面に移動</a>
     </form>
 </body>
 </html>
